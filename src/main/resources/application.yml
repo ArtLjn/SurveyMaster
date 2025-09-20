@@ -1,0 +1,62 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev  # 默认使用开发环境
+  
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:23306/survey_master?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  
+  data:
+    mongodb:
+      username: admin
+      password: admin123
+      host: localhost
+      port: 27017
+      database: surveydb
+  
+  redis:
+    host: localhost
+    port: 26379
+    password: 123456  # 可选
+    database: 0
+    lettuce:
+      pool:
+        max-active: 16    # 最大活跃连接数
+        max-idle: 8       # 最大空闲连接
+        min-idle: 2       # 最小空闲连接
+        max-wait: 5000ms  # 等待超时时间
+  
+  rabbitmq:
+    host: localhost
+    password: 123456
+    virtual-host: /
+    username: admin
+
+#  elasticsearch:
+#    rest:
+#      username:
+#      password:
+#      uris: http://localhost:9200
+#      connection-timeout: 5s
+
+# 日志配置
+logging:
+  level:
+    org.practice.surveymaster: DEBUG
+    org.mybatis: DEBUG
+    java.sql: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{50}] - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level [%logger{50}] - %msg%n"
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: org.practice.surveymaster.model
+  configuration:
+    map-underscore-to-camel-case: true
+

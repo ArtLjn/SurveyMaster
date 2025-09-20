@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="darkGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="darkGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f3460;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#533483;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- 背景圆 -->
+  <circle cx="100" cy="100" r="90" fill="url(#darkGradient1)"/>
+  
+  <!-- 发光边框 -->
+  <circle cx="100" cy="100" r="85" fill="none" stroke="url(#darkGradient2)" stroke-width="2" filter="url(#glow)"/>
+  
+  <!-- 柱状图 -->
+  <g transform="translate(100, 100)">
+    <!-- 第一根柱子 -->
+    <rect x="-40" y="-30" width="12" height="40" rx="2" fill="#00d4ff" opacity="0.9"/>
+    <!-- 第二根柱子 -->
+    <rect x="-20" y="-45" width="12" height="55" rx="2" fill="#00d4ff" opacity="0.9"/>
+    <!-- 第三根柱子 -->
+    <rect x="0" y="-20" width="12" height="30" rx="2" fill="#00d4ff" opacity="0.9"/>
+    <!-- 第四根柱子 -->
+    <rect x="20" y="-35" width="12" height="45" rx="2" fill="#00d4ff" opacity="0.9"/>
+    <!-- 第五根柱子 -->
+    <rect x="40" y="-25" width="12" height="35" rx="2" fill="#00d4ff" opacity="0.9"/>
+  </g>
+  
+  <!-- 网格线 -->
+  <g stroke="#2a2a4a" stroke-width="0.5" opacity="0.5">
+    <line x1="50" y1="50" x2="150" y2="50"/>
+    <line x1="50" y1="75" x2="150" y2="75"/>
+    <line x1="50" y1="100" x2="150" y2="100"/>
+    <line x1="50" y1="125" x2="150" y2="125"/>
+    <line x1="50" y1="150" x2="150" y2="150"/>
+    
+    <line x1="50" y1="50" x2="50" y2="150"/>
+    <line x1="75" y1="50" x2="75" y2="150"/>
+    <line x1="100" y1="50" x2="100" y2="150"/>
+    <line x1="125" y1="50" x2="125" y2="150"/>
+    <line x1="150" y1="50" x2="150" y2="150"/>
+  </g>
+  
+  <!-- 底部横线 -->
+  <line x1="50" y1="130" x2="150" y2="130" stroke="#00d4ff" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- 顶部装饰点 -->
+  <circle cx="100" cy="40" r="4" fill="#00d4ff" opacity="0.8"/>
+  
+  <!-- 数据流效果 -->
+  <circle cx="60" cy="90" r="1.5" fill="#00d4ff" opacity="0.7"/>
+  <circle cx="80" cy="75" r="1.5" fill="#00d4ff" opacity="0.7"/>
+  <circle cx="120" cy="85" r="1.5" fill="#00d4ff" opacity="0.7"/>
+  <circle cx="140" cy="70" r="1.5" fill="#00d4ff" opacity="0.7"/>
+</svg>
