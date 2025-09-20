@@ -1,0 +1,63 @@
+# 测试环境配置文件
+server:
+  port: 8081
+
+spring:
+  # 数据库配置 - 测试环境（通常使用内存数据库或测试专用数据库）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:23306/survey_master_test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+  
+  # MongoDB 配置 - 测试环境
+  data:
+    mongodb:
+      username: admin
+      password: admin123
+      host: localhost
+      port: 27017
+      database: surveydb_test
+  
+  # Redis 配置 - 测试环境
+  redis:
+    host: localhost
+    port: 26379
+    password: 123456
+    database: 1  # 使用不同的数据库避免与开发环境冲突
+    lettuce:
+      pool:
+        max-active: 4     # 测试环境资源限制
+        max-idle: 2
+        min-idle: 1
+        max-wait: 3000ms
+  
+  # RabbitMQ 配置 - 测试环境
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: 123456
+    virtual-host: /test
+
+# 测试环境日志配置 - 详细但不保存太久
+logging:
+  level:
+    root: INFO
+    org.practice.surveymaster: DEBUG
+    org.mybatis: DEBUG
+    java.sql: DEBUG
+  file:
+    name: logs/test/survey-master.log
+    max-size: 50MB
+    max-history: 3
+
+# 测试环境监控配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics  # 测试环境适度暴露端点
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,79 @@
+# 生产环境配置文件
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    accept-count: 100
+    max-connections: 8192
+
+spring:
+  # 数据库配置 - 生产环境
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:prod-mysql-server}:${DB_PORT:3306}/${DB_NAME:survey_master}?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:survey_user}
+    password: ${DB_PASSWORD:your_prod_password}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  
+  # MongoDB 配置 - 生产环境
+  data:
+    mongodb:
+      username: ${MONGO_USERNAME:survey_user}
+      password: ${MONGO_PASSWORD:your_mongo_password}
+      host: ${MONGO_HOST:prod-mongo-server}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_DATABASE:surveydb_prod}
+      authentication-database: admin
+  
+  # Redis 配置 - 生产环境
+  redis:
+    host: ${REDIS_HOST:prod-redis-server}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:your_redis_password}
+    database: 0
+    timeout: 3000ms
+    lettuce:
+      pool:
+        max-active: 50    # 生产环境更多连接
+        max-idle: 20
+        min-idle: 5
+        max-wait: 3000ms
+  
+  # RabbitMQ 配置 - 生产环境
+  rabbitmq:
+    host: ${RABBITMQ_HOST:prod-rabbitmq-server}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:survey_user}
+    password: ${RABBITMQ_PASSWORD:your_rabbitmq_password}
+    virtual-host: ${RABBITMQ_VHOST:/survey}
+
+# 生产环境日志配置 - 更严格的日志级别
+logging:
+  level:
+    root: WARN
+    org.practice.surveymaster: INFO
+    org.springframework.web: WARN
+  file:
+    name: /var/log/survey-master/survey-master.log
+    max-size: 200MB
+    max-history: 30
+
+# 生产环境监控配置 - 更安全的端点暴露
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus  # 只暴露必要的监控端点
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+  security:
+    enabled: true

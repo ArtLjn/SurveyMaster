@@ -34,3 +34,6 @@ build/
 .claude
 logs
 
+src/main/resources/application-dev.yml
+
+docs

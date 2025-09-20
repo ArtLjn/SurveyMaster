@@ -5,10 +5,14 @@ import org.practice.surveymaster.constant.ErrorCode;
 import org.practice.surveymaster.exception.BusinessException;
 import org.practice.surveymaster.util.AssertUtil;
 import org.practice.surveymaster.vo.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 错误码使用示例控制器
@@ -20,6 +24,30 @@ import javax.validation.constraints.NotBlank;
 @RestController
 @RequestMapping("/api/test")
 public class TestController {
+
+    @Autowired
+    private Environment environment;
+
+    /**
+     * 获取当前环境信息
+     */
+    @GetMapping("/environment")
+    public ApiResponse<Map<String, Object>> getCurrentEnvironment() {
+        Map<String, Object> envInfo = new HashMap<>();
+        
+        // 获取激活的 profiles
+        String[] activeProfiles = environment.getActiveProfiles();
+        String[] defaultProfiles = environment.getDefaultProfiles();
+        
+        envInfo.put("activeProfiles", activeProfiles.length > 0 ? activeProfiles : defaultProfiles);
+        envInfo.put("serverPort", environment.getProperty("server.port"));
+        envInfo.put("databaseUrl", environment.getProperty("spring.datasource.url"));
+        envInfo.put("redisHost", environment.getProperty("spring.redis.host"));
+        envInfo.put("redisDatabase", environment.getProperty("spring.redis.database"));
+        envInfo.put("mongoDatabase", environment.getProperty("spring.data.mongodb.database"));
+        
+        return ApiResponse.success("当前环境信息", envInfo);
+    }
 
     /**
      * 示例1：使用断言工具类
