@@ -46,6 +46,7 @@ public enum ErrorCode {
     PASSWORD_TOO_SIMPLE("USER-0802", "密码过于简单", 400),
     PASSWORD_MISMATCH("USER-0903", "密码不匹配", 400),
     USER_STATUS_ABNORMAL("USER-1003", "用户状态异常", 403),
+    USER_PASSWORD_ERROR("USER-0901", "用户名或密码错误", 401),
 
     // ========== 认证授权模块 ==========
     AUTH_FAILURE("AUTH-0103", "认证失败", 401),

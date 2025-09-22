@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         // 2. TODO 密码加密前端操作
         User user = userMapper.selectByUsernameAndPassword(username,MD5Util.md5(password));
         if (user == null) {
-            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+            throw new BusinessException(ErrorCode.USER_PASSWORD_ERROR);
         }
         // 3. 返回用户信息
         return user;

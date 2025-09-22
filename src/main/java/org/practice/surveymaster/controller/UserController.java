@@ -41,14 +41,10 @@ public class UserController {
 
     @PostMapping("/login")
     @LogBusiness("用户登录")
-    public ApiResponse<LoginResponse> login(@Valid @RequestBody UserLogin userLogin)
+    public ApiResponse<User> login(@Valid @RequestBody UserLogin userLogin)
     {
         User user = userService.login(userLogin.getUsername(), userLogin.getPassword());
-        // 返回信息 用户名，邮箱
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setUsername(user.getUsername());
-        loginResponse.setEmail(user.getEmail());
-        return ApiResponse.success("登录成功",loginResponse);
+        return ApiResponse.success("登录成功",user);
     }
 
     @PostMapping("/register")
