@@ -30,6 +30,14 @@ sensitive:
   enable-json: true          # 是否在 JSON 序列化时启用脱敏
   default-mask-char: "*"     # 默认的脱敏字符
 
+# JWT配置
+jwt:
+  secret: surveymaster-jwt-secret-key-for-authentication-very-secure-2025
+  access-token-expiration: 7200000      # 访问令牌过期时间（毫秒）- 2小时
+  refresh-token-expiration: 604800000   # 刷新令牌过期时间（毫秒）- 7天
+  token-header: Authorization           # token请求头名称
+  token-prefix: "Bearer "               # token前缀
+
 # 默认日志配置 - 可被各环境覆盖
 logging:
   pattern:

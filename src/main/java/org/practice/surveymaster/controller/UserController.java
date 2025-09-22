@@ -7,11 +7,9 @@ import org.practice.surveymaster.model.User;
 import org.practice.surveymaster.service.UserService;
 import org.practice.surveymaster.vo.ApiResponse;
 import org.practice.surveymaster.vo.LoginResponse;
+import org.practice.surveymaster.vo.LoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -41,17 +39,22 @@ public class UserController {
 
     @PostMapping("/login")
     @LogBusiness("用户登录")
-    public ApiResponse<User> login(@Valid @RequestBody UserLogin userLogin)
-    {
-        User user = userService.login(userLogin.getUsername(), userLogin.getPassword());
-        return ApiResponse.success("登录成功",user);
+    public ApiResponse<LoginResponse> login(@Valid @RequestBody UserLogin userLogin) {
+        LoginResponse loginResponse = userService.login(userLogin.getUsername(), userLogin.getPassword());
+        return ApiResponse.success("登录成功", loginResponse);
     }
 
     @PostMapping("/register")
     @LogBusiness("用户注册")
-    public ApiResponse<String> register(@Valid @RequestBody UserRegister userRegister)
-    {
+    public ApiResponse<String> register(@Valid @RequestBody UserRegister userRegister) {
         userService.register(userRegister);
         return ApiResponse.success("注册成功");
+    }
+    
+    @PostMapping("/refresh-token")
+    @LogBusiness("刷新令牌")
+    public ApiResponse<LoginResponse> refreshToken(@RequestParam("refreshToken") String refreshToken) {
+        LoginResponse loginResponse = userService.refreshAccessToken(refreshToken);
+        return ApiResponse.success("令牌刷新成功", loginResponse);
     }
 }

@@ -36,4 +36,4 @@ logs
 
 src/main/resources/application-dev.yml
 
-docs
+#docs
