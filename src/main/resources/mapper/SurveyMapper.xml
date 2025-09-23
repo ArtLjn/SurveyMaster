@@ -56,6 +56,13 @@
         WHERE id = #{id}
     </update>
 
+<!--    更新问卷状态-->
+    <update id="updateStatus" parameterType="org.practice.surveymaster.model.Survey">
+        UPDATE survey
+        SET status = #{status}
+        WHERE id = #{id}
+        AND user_id = #{userId}
+    </update>
 
     <!-- 删除问卷 -->
     <delete id="deleteById" parameterType="long">

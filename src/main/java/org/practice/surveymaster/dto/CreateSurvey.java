@@ -17,7 +17,7 @@ public class CreateSurvey {
     /**
      * 用户ID（由JWT拦截器自动设置，前端无需传递）
      */
-    private int userId;
+    private Long userId;
     
     /**
      * 问卷标题

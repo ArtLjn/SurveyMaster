@@ -1,6 +1,7 @@
 package org.practice.surveymaster.service;
 
 import org.practice.surveymaster.dto.CreateSurvey;
+import org.practice.surveymaster.dto.UpdateSurveyStatus;
 import org.practice.surveymaster.model.Survey;
 
 import java.util.List;
@@ -27,11 +28,10 @@ public interface SurveyService {
     void CreateSurvey(CreateSurvey createSurvey);
 
     /**
-     * 发布/关闭问卷
-     * @param id 问卷id
-     * @param status 问卷状态 1-发布 2-关闭
+     * 更新问卷状态
+     * @param updateSurveyStatus 更新问卷状态参数
      */
-    void ChangeSurveyStatus(Long id, int status);
+    void ChangeSurveyStatus(UpdateSurveyStatus updateSurveyStatus);
 
     /**
      * 查询用户问卷列表

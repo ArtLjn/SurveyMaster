@@ -5,13 +5,8 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * [问卷类]
- * </p>
- *
- * <p>
- * [可以在这里补充更详细的说明，例如设计思路、关键算法、使用示例或注意事项。]
- * </p>
+ * 问卷实体类
+ * 对应数据库中survey表的结构
  *
  * @author ljn
  * @since 2025/9/22 下午8:28
@@ -30,10 +25,34 @@ import java.time.LocalDateTime;
  */
 @Data
 public class Survey {
-    private int id;
-    private int userId;
+    /**
+     * 问卷ID（对应数据库BIGINT类型）
+     */
+    private Long id;
+    
+    /**
+     * 创建者ID（对应数据库BIGINT类型）
+     */
+    private Long userId;
+    
+    /**
+     * 问卷标题
+     */
     private String title;
+    
+    /**
+     * 问卷描述
+     */
     private String description;
+    
+    /**
+     * 问卷状态
+     * 0=草稿, 1=发布, 2=关闭
+     */
     private int status;
+    
+    /**
+     * 创建时间
+     */
     private LocalDateTime createdAt;
 }

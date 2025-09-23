@@ -31,4 +31,6 @@ public interface SurveyMapper {
     int update(Survey survey);
     // 删除问卷
     int deleteById(@Param("id") long id);
+    // 更新问卷状态
+    int updateStatus(@Param("id") long id, @Param("status") int status, @Param("userId") long userId);
 }

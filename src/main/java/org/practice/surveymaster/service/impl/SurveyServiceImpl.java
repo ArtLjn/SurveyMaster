@@ -2,8 +2,10 @@ package org.practice.surveymaster.service.impl;
 
 import org.practice.surveymaster.constant.ErrorCode;
 import org.practice.surveymaster.dto.CreateSurvey;
+import org.practice.surveymaster.dto.UpdateSurveyStatus;
 import org.practice.surveymaster.exception.BusinessException;
 import org.practice.surveymaster.mapper.SurveyMapper;
+import org.practice.surveymaster.mapper.UserMapper;
 import org.practice.surveymaster.model.Survey;
 import org.practice.surveymaster.service.SurveyService;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +28,7 @@ public class SurveyServiceImpl implements SurveyService {
     private final SurveyMapper surveyMapper;
 
     @Autowired
-    public SurveyServiceImpl(SurveyMapper surveyMapper) {
+    public SurveyServiceImpl(SurveyMapper surveyMapper, UserMapper userMapper) {
         this.surveyMapper = surveyMapper;
     }
 
@@ -49,12 +51,36 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     @Override
-    public void ChangeSurveyStatus(Long id, int status) {
-
+    public void ChangeSurveyStatus(UpdateSurveyStatus updateSurveyStatus) {
+        // 检查问卷是否存在且属于当前用户
+        Survey existingSurvey = surveyMapper.selectById(updateSurveyStatus.getId());
+        if (existingSurvey == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND, "问卷不存在");
+        }
+        
+        if (!existingSurvey.getUserId().equals(updateSurveyStatus.getUserId())) {
+            throw new BusinessException(ErrorCode.FORBIDDEN, "无权操作此问卷");
+        }
+        
+        // 更新问卷状态
+        int result = surveyMapper.updateStatus(
+                updateSurveyStatus.getId(),
+                updateSurveyStatus.getStatus(),
+                updateSurveyStatus.getUserId()
+        );
+        
+        if (result <= 0) {
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, "更新问卷状态失败");
+        }
     }
+
 
     @Override
     public List<Survey> QuerySurveyListByUserId(Long userId) {
+        if (userId != null) {
+            return surveyMapper.selectByUserId(userId);
+        }
+
         return Collections.emptyList();
     }
 
