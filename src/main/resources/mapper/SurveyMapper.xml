@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.practice.surveymaster.mapper.SurveyMapper">
+    <!-- 引入 MyBatis SQL片段使用规范 -->
+    <sql id="Base_Column_List">
+        id, user_id, title, description, status, created_at
+    </sql>
+
+    <resultMap id="SurveyResultMap" type="org.practice.surveymaster.model.Survey">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="LONGVARCHAR"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <!-- 插入问卷 -->
+    <insert id="insert" parameterType="org.practice.surveymaster.model.Survey" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO survey (user_id, title, description, status, created_at)
+        VALUES (#{userId}, #{title}, #{description}, #{status}, #{createdAt})
+    </insert>
+
+    <!-- 根据ID查询问卷 -->
+    <select id="selectById" parameterType="long" resultMap="SurveyResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM survey
+        WHERE id = #{id}
+    </select>
+
+    <!-- 查询用户的所有问卷 -->
+    <select id="selectByUserId" parameterType="long" resultMap="SurveyResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM survey
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 更新问卷 -->
+    <update id="update" parameterType="org.practice.surveymaster.model.Survey">
+        UPDATE survey
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <!-- 删除问卷 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM survey WHERE id = #{id}
+    </delete>
+</mapper>

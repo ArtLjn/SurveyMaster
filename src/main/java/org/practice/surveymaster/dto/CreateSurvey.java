@@ -5,13 +5,8 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 /**
- * <p>
- * [在此处用一两句话描述该类的核心职责和目的。]
- * </p>
- *
- * <p>
- * [可以在这里补充更详细的说明，例如设计思路、关键算法、使用示例或注意事项。]
- * </p>
+ * 创建问卷请求DTO
+ * 用于接收创建问卷的请求参数
  *
  * @author ljn
  * @since 2025/9/22 下午8:31
@@ -19,11 +14,26 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class CreateSurvey {
+    /**
+     * 用户ID（由JWT拦截器自动设置，前端无需传递）
+     */
+    private int userId;
+    
+    /**
+     * 问卷标题
+     */
     @NotBlank(message = "标题不能为空")
     private String title;
+    
+    /**
+     * 问卷描述
+     */
     @NotBlank(message = "描述不能为空")
     private String description;
-    @NotBlank(message = "状态不为空")
-    // -- 0=草稿,1=发布,2=关闭
+    
+    /**
+     * 问卷状态
+     * 0=草稿, 1=发布, 2=关闭
+     */
     private int status;
 }
