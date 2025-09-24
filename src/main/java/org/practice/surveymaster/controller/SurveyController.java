@@ -65,13 +65,7 @@ public class SurveyController {
     }
 
 
-    /**
-     * 更新问卷状态
-     *
-     * @param updateSurveyStatus 更新问卷状态请求
-     * @param request HTTP请求对象，用于获取当前用户信息
-     * @return 更新结果
-     */
+
     /**
      * 更新问卷状态
      *
@@ -94,4 +88,5 @@ public class SurveyController {
 
         return ApiResponse.success();
     }
+
 }

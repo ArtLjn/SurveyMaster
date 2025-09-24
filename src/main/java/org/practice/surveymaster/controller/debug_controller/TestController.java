@@ -1,4 +1,4 @@
-package org.practice.surveymaster.controller;
+package org.practice.surveymaster.controller.debug_controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.practice.surveymaster.constant.ErrorCode;

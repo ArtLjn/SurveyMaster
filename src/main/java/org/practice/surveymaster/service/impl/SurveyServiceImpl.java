@@ -8,6 +8,7 @@ import org.practice.surveymaster.mapper.SurveyMapper;
 import org.practice.surveymaster.mapper.UserMapper;
 import org.practice.surveymaster.model.Survey;
 import org.practice.surveymaster.service.SurveyService;
+import org.practice.surveymaster.util.AssertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class SurveyServiceImpl implements SurveyService {
         
         // 插入数据库
         int result = surveyMapper.insert(survey);
+
         if (result <= 0) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
@@ -54,14 +56,10 @@ public class SurveyServiceImpl implements SurveyService {
     public void ChangeSurveyStatus(UpdateSurveyStatus updateSurveyStatus) {
         // 检查问卷是否存在且属于当前用户
         Survey existingSurvey = surveyMapper.selectById(updateSurveyStatus.getId());
-        if (existingSurvey == null) {
-            throw new BusinessException(ErrorCode.NOT_FOUND, "问卷不存在");
-        }
-        
-        if (!existingSurvey.getUserId().equals(updateSurveyStatus.getUserId())) {
-            throw new BusinessException(ErrorCode.FORBIDDEN, "无权操作此问卷");
-        }
-        
+        AssertUtil.notNull(existingSurvey, ErrorCode.NOT_FOUND, "问卷不存在");
+        AssertUtil.isTrue(existingSurvey.getUserId().equals(updateSurveyStatus.getUserId()),
+                ErrorCode.UNAUTHORIZED, "无权操作此问卷");
+
         // 更新问卷状态
         int result = surveyMapper.updateStatus(
                 updateSurveyStatus.getId(),

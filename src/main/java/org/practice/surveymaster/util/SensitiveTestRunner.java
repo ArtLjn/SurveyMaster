@@ -81,7 +81,7 @@ public class SensitiveTestRunner implements CommandLineRunner {
         try {
             // 创建用户对象
             User user = new User();
-            user.setId(1);
+            user.setId(1L);
             user.setUsername("李四");
             user.setPassword("password123");
             user.setEmail("lisi@test.com");

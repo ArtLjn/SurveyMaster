@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.practice.surveymaster.mapper.QuestionMapper">
+
+    <!-- 问题结果映射 -->
+    <resultMap id="QuestionResultMap" type="org.practice.surveymaster.model.Question">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="survey_id" property="surveyId" jdbcType="BIGINT"/>
+        <result column="type" property="type" 
+                jdbcType="VARCHAR" 
+                typeHandler="org.practice.surveymaster.config.QuestionTypeHandler"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+
+    <!-- 基础列名 -->
+    <sql id="Base_Column_List">
+        id, survey_id, type, content
+    </sql>
+
+    <!-- 插入问题 -->
+    <insert id="insert" parameterType="org.practice.surveymaster.model.Question" 
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO question (survey_id, type, content)
+        VALUES (#{surveyId}, #{type, typeHandler=org.practice.surveymaster.config.QuestionTypeHandler}, #{content})
+    </insert>
+
+    <!-- 根据ID查询问题 -->
+    <select id="selectById" parameterType="long" resultMap="QuestionResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM question
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据问卷ID查询所有问题 -->
+    <select id="selectBySurveyId" parameterType="long" resultMap="QuestionResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM question
+        WHERE survey_id = #{surveyId}
+        ORDER BY id ASC
+    </select>
+
+    <!-- 更新问题 -->
+    <update id="update" parameterType="org.practice.surveymaster.model.Question">
+        UPDATE question
+        <set>
+            <if test="type != null">
+                type = #{type, typeHandler=org.practice.surveymaster.config.QuestionTypeHandler},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID删除问题 -->
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM question WHERE id = #{id}
+    </delete>
+
+    <!-- 根据问卷ID删除所有问题 -->
+    <delete id="deleteBySurveyId" parameterType="long">
+        DELETE FROM question WHERE survey_id = #{surveyId}
+    </delete>
+
+</mapper>

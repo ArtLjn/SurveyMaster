@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-    private int id;
+    private Long id;
     
     @Sensitive(SensitiveType.NAME)
     @JsonSerialize(using = SensitiveJsonSerializer.class)

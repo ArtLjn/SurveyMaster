@@ -1,4 +1,4 @@
-package org.practice.surveymaster.controller;
+package org.practice.surveymaster.controller.debug_controller;
 
 import org.practice.surveymaster.annotation.LogBusiness;
 import org.practice.surveymaster.vo.ApiResponse;

@@ -144,13 +144,13 @@ public class AssertUtil {
     /**
      * 断言两个对象相等
      */
-    public static void equals(Object expected, Object actual, ErrorCode errorCode) {
+    public static void equalT(Object expected, Object actual, ErrorCode errorCode) {
         if (!Objects.equals(expected, actual)) {
             throw new BusinessException(errorCode);
         }
     }
 
-    public static void equals(Object expected, Object actual, ErrorCode errorCode, String message) {
+    public static void equalT(Object expected, Object actual, ErrorCode errorCode, String message) {
         if (!Objects.equals(expected, actual)) {
             throw new BusinessException(errorCode, message);
         }
@@ -197,4 +197,5 @@ public class AssertUtil {
             throw new BusinessException(errorCode, message);
         }
     }
+
 }

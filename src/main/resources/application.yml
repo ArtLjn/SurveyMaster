@@ -20,6 +20,7 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: org.practice.surveymaster.model
+  type-handlers-package: org.practice.surveymaster.config
   configuration:
     map-underscore-to-camel-case: true
 

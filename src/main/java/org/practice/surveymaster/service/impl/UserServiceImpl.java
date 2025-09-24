@@ -7,6 +7,7 @@ import org.practice.surveymaster.exception.BusinessException;
 import org.practice.surveymaster.mapper.UserMapper;
 import org.practice.surveymaster.model.User;
 import org.practice.surveymaster.service.UserService;
+import org.practice.surveymaster.util.AssertUtil;
 import org.practice.surveymaster.util.JwtUtil;
 import org.practice.surveymaster.util.MD5Util;
 import org.practice.surveymaster.vo.LoginResponse;
@@ -36,12 +37,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserRegister userRegister) {
         // 1. 检查用户名是否已存在
-        if (userMapper.existsByUsername(userRegister.getUsername()))  {
-            throw new BusinessException(ErrorCode.USER_ALREADY_EXISTS);
-        } // 检查邮箱是否存在
-        else if (userMapper.existsByEmail(userRegister.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_ALREADY_EXISTS);
-        }
+        AssertUtil.state(!userMapper.existsByUsername(userRegister.getUsername()), ErrorCode.USER_ALREADY_EXISTS);
+        // 检查邮箱是否存在
+        AssertUtil.state(!userMapper.existsByEmail(userRegister.getEmail()), ErrorCode.EMAIL_ALREADY_EXISTS);
+
         // 2. 对密码进行加密
         userRegister.setPassword(MD5Util.md5(userRegister.getPassword()));
         User user = new User();
@@ -58,10 +57,7 @@ public class UserServiceImpl implements UserService {
         // 1. 根据用户名查找用户
         // 2. TODO 密码加密前端操作
         User user = userMapper.selectByUsernameAndPassword(username, MD5Util.md5(password));
-        if (user == null) {
-            throw new BusinessException(ErrorCode.USER_PASSWORD_ERROR);
-        }
-        
+        AssertUtil.notNull(user, ErrorCode.USER_PASSWORD_ERROR);
         // 3. 生成JWT token
         String accessToken = jwtUtil.generateAccessToken((long) user.getId(), user.getUsername());
         String refreshToken = jwtUtil.generateRefreshToken((long) user.getId(), user.getUsername());
@@ -79,9 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginResponse refreshAccessToken(String refreshToken) {
         // 1. 验证刷新令牌的有效性
-        if (!jwtUtil.validateRefreshToken(refreshToken)) {
-            throw new BusinessException(ErrorCode.TOKEN_INVALID);
-        }
+        AssertUtil.state(jwtUtil.validateRefreshToken(refreshToken), ErrorCode.TOKEN_INVALID);
         
         try {
             // 2. 从刷新令牌中获取用户信息
@@ -97,7 +91,7 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 // 如果查不到用户，创建一个简单的用户对象用于响应
                 user = new User();
-                user.setId(userId.intValue());
+                user.setId(userId);
                 user.setUsername(username);
             }
             

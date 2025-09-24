@@ -1,4 +1,4 @@
-package org.practice.surveymaster.controller;
+package org.practice.surveymaster.controller.debug_controller;
 
 import org.practice.surveymaster.annotation.Sensitive;
 import org.practice.surveymaster.constant.SensitiveType;
@@ -36,7 +36,7 @@ public class SensitiveDemoController {
     @GetMapping("/user")
     public ApiResponse<User> getUserInfo() {
         User user = new User();
-        user.setId(1);
+        user.setId(1L);
         user.setUsername("张三丰");
         user.setPassword("mySecretPassword123");
         user.setEmail("zhangsan@example.com");
@@ -51,21 +51,21 @@ public class SensitiveDemoController {
     @GetMapping("/users")
     public ApiResponse<List<User>> getUserList() {
         User user1 = new User();
-        user1.setId(1);
+        user1.setId(1L);
         user1.setUsername("李四");
         user1.setPassword("password123");
         user1.setEmail("lisi@test.com");
         user1.setCreatedAt(LocalDateTime.now().minusDays(1));
 
         User user2 = new User();
-        user2.setId(2);
+        user2.setId(2L);
         user2.setUsername("王五六");
         user2.setPassword("abc123456");
         user2.setEmail("wangwuliu@company.org");
         user2.setCreatedAt(LocalDateTime.now().minusDays(2));
 
         User user3 = new User();
-        user3.setId(3);
+        user3.setId(3L);
         user3.setUsername("欧阳修");
         user3.setPassword("strongPassword");
         user3.setEmail("ouyangxiu@poetry.cn");
