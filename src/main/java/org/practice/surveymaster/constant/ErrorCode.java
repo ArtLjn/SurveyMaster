@@ -70,6 +70,11 @@ public enum ErrorCode {
     INVALID_QUESTION_TYPE("QUES-0202", "题目类型无效", 400),
     INVALID_QUESTION_DATA("QUES-0302", "题目数据无效", 400),
 
+    // ========== 选项模块 ==========
+    OPTION_NOT_FOUND("OPTI-0103", "选项不存在", 404),
+    OPERATION_FAILED("OPTI-0203", "操作失败", 500),
+    INVALID_OPTION_DATA("OPTI-0302", "选项数据无效", 400),
+
     // ========== 答案模块 ==========
     ANSWER_NOT_FOUND("ANSW-0103", "答案不存在", 404),
     INVALID_ANSWER_DATA("ANSW-0202", "答案数据无效", 400),

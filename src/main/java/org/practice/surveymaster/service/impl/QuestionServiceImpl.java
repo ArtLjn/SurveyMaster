@@ -1,17 +1,20 @@
 package org.practice.surveymaster.service.impl;
 
 import org.practice.surveymaster.constant.ErrorCode;
+import org.practice.surveymaster.constant.QuestionType;
 import org.practice.surveymaster.dto.AddQuestion;
-import org.practice.surveymaster.exception.BusinessException;
 import org.practice.surveymaster.mapper.QuestionMapper;
 import org.practice.surveymaster.mapper.SurveyMapper;
 import org.practice.surveymaster.model.Question;
 import org.practice.surveymaster.model.Survey;
+import org.practice.surveymaster.service.OptionService;
 import org.practice.surveymaster.service.QuestionService;
 import org.practice.surveymaster.util.AssertUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -27,14 +30,17 @@ public class QuestionServiceImpl implements QuestionService {
     
     private final QuestionMapper questionMapper;
     private final SurveyMapper surveyMapper;
+    private final OptionService optionService;
     
     @Autowired
-    public QuestionServiceImpl(QuestionMapper questionMapper, SurveyMapper surveyMapper) {
+    public QuestionServiceImpl(QuestionMapper questionMapper, SurveyMapper surveyMapper, OptionService optionService) {
         this.questionMapper = questionMapper;
         this.surveyMapper = surveyMapper;
+        this.optionService = optionService;
     }
     
     @Override
+    @Transactional
     public Question addQuestion(AddQuestion addQuestion, Long currentUserId) {
         AssertUtil.notNull(currentUserId, ErrorCode.AUTH_FAILURE, "用户未登录");
         
@@ -50,6 +56,11 @@ public class QuestionServiceImpl implements QuestionService {
         // 插入数据库
         int result = questionMapper.insert(question);
         AssertUtil.isTrue(result > 0, ErrorCode.INTERNAL_SERVER_ERROR, "添加问题失败");
+        
+        // 如果是选择题且提供了选项，则添加选项
+        if (needsOptions(addQuestion.getType()) && !CollectionUtils.isEmpty(addQuestion.getOptions())) {
+            optionService.addOptions(question.getId(), addQuestion.getOptions(), currentUserId);
+        }
         
         return question;
     }
@@ -96,6 +107,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
     
     @Override
+    @Transactional
     public void deleteQuestion(Long id, Long currentUserId) {
         AssertUtil.notNull(id, ErrorCode.BAD_REQUEST, "问题ID不能为空");
         AssertUtil.notNull(currentUserId, ErrorCode.AUTH_FAILURE, "用户未登录");
@@ -108,8 +120,23 @@ public class QuestionServiceImpl implements QuestionService {
         AssertUtil.notNull(survey, ErrorCode.NOT_FOUND, "所属问卷不存在");
         AssertUtil.isTrue(survey.getUserId().equals(currentUserId), ErrorCode.UNAUTHORIZED, "无权限操作此问题");
         
+        // 如果是选择题，先删除相关选项
+        if (needsOptions(question.getType())) {
+            optionService.deleteOptionsByQuestionId(id, currentUserId);
+        }
+        
         // 删除问题
         int result = questionMapper.deleteById(id);
         AssertUtil.isTrue(result > 0, ErrorCode.INTERNAL_SERVER_ERROR, "删除问题失败");
+    }
+    
+    /**
+     * 判断问题类型是否需要选项
+     * 
+     * @param questionType 问题类型
+     * @return 是否需要选项
+     */
+    private boolean needsOptions(QuestionType questionType) {
+        return questionType == QuestionType.SINGLE_CHOICE || questionType == QuestionType.MULTIPLE_CHOICE;
     }
 }

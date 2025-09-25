@@ -5,6 +5,7 @@ import org.practice.surveymaster.constant.QuestionType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 添加问题DTO
@@ -34,4 +35,10 @@ public class AddQuestion {
      */
     @NotBlank(message = "问题内容不能为空")
     private String content;
+    
+    /**
+     * 问题选项列表（可选）
+     * 仅适用于单选题和多选题
+     */
+    private List<String> options;
 }
