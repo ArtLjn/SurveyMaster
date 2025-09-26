@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class LogAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+//    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * 定义切点：所有Controller、Service、Mapper方法

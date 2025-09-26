@@ -64,4 +64,11 @@ public interface QuestionMapper {
      * @return 影响行数
      */
     int deleteBySurveyId(@Param("surveyId") Long surveyId);
+
+    /**
+     * 根据问卷ID查询所有问题ID
+     * @param surveyId 问卷ID
+     * @return 问题ID列表
+     */
+    List<Long> getQuestionIdsBySurveyId(@Param("surveyId") Long surveyId);
 }

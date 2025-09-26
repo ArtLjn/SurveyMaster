@@ -3,6 +3,8 @@ package org.practice.surveymaster.model;
 import lombok.Data;
 import org.practice.surveymaster.constant.QuestionType;
 
+import java.util.List;
+
 /**
  * 问题实体类
  * 对应数据库中question表的结构

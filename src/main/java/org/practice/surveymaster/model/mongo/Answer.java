@@ -1,4 +1,4 @@
-package org.practice.surveymaster.repository.mongo;
+package org.practice.surveymaster.model.mongo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -79,7 +79,6 @@ public enum ErrorCode {
     ANSWER_NOT_FOUND("ANSW-0103", "答案不存在", 404),
     INVALID_ANSWER_DATA("ANSW-0202", "答案数据无效", 400),
     ANSWER_ALREADY_SUBMITTED("ANSW-0303", "答案已提交", 409),
-
     // ========== 数据模块 ==========
     DATA_NOT_FOUND("DATA-0103", "数据不存在", 404),
     DATA_ALREADY_EXISTS("DATA-0203", "数据已存在", 409),

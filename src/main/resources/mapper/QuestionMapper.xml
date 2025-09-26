@@ -65,4 +65,8 @@
         DELETE FROM question WHERE survey_id = #{surveyId}
     </delete>
 
+    <!-- 根据问卷ID查询所有问题ID -->
+    <select id="getQuestionIdsBySurveyId" parameterType="long" resultType="long">
+        SELECT id FROM question WHERE survey_id = #{surveyId}
+    </select>
 </mapper>

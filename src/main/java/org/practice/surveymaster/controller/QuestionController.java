@@ -89,7 +89,6 @@ public class QuestionController {
                                           HttpServletRequest request) {
         // 从JWT拦截器中获取当前用户ID
         Long currentUserId = (Long) request.getAttribute("currentUserId");
-        
         // 调用服务层更新问题
         questionService.updateQuestion(question, currentUserId);
         
